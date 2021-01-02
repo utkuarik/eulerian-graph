@@ -19,8 +19,8 @@ public:
 
     // Pointer to an array containing adjacency lists
     vector<vector<int>> adjacencyList;
-    map<int,int> incoming_counter;
-    map<int,int> outgoing_counter;
+    unordered_map<int,int> incoming_counter;
+    unordered_map<int,int> outgoing_counter;
     void traverse(int v, bool visited[]);
 
     Graph(int numberOfVertices);
@@ -43,7 +43,7 @@ Graph::Graph(int numberOfVertices) {
 // }
 
 void Graph::addEdge(int v, int w) {
-    std::map<int,int>::iterator itr;
+    unordered_map<int,int>::iterator itr;
 
     try {
         adjacencyList.at(v).push_back(w); 
@@ -65,7 +65,7 @@ void Graph::addEdge(int v, int w) {
         }
         else
         {
-            incoming_counter.insert (pair<int,int>(w, 1));
+            incoming_counter.insert({w, 1});
         }
             
         itr = outgoing_counter.find(v);
@@ -73,7 +73,7 @@ void Graph::addEdge(int v, int w) {
             itr->second = itr->second + 1;
         }
         else{
-            outgoing_counter.insert (pair<int,int>(v, 1));
+            outgoing_counter.insert ({v, 1});
         }
 
 
@@ -89,7 +89,7 @@ void Graph::addEdge(int v, int w) {
             }
             else
             {
-                incoming_counter.insert ( pair<int,int>(w, 1));
+                incoming_counter.insert ( {w, 1});
             }
            }
 
@@ -182,6 +182,8 @@ int main(int argc, char const *argv[]) {
     int previous_start;
     int edge_count =0;
 
+
+
     
     // read the input file
     while (!infile.eof())
@@ -197,6 +199,8 @@ int main(int argc, char const *argv[]) {
 
 
     // Initiliaze the graph
+
+    auto start1 = high_resolution_clock::now(); 
     Graph graph(number_of_vertices);
 
     for (int i=1; i< input_array.size()-1 ; i++){
@@ -210,6 +214,13 @@ int main(int argc, char const *argv[]) {
         }
 
     }
+
+    auto stop = high_resolution_clock::now(); 
+    auto duration = duration_cast<microseconds>(stop - start1);
+
+    cout<<endl;
+    cout << "Time taken by function: "
+         << duration.count() / 1000000 << " seconds" << endl; 
 
     // cout<<endl;
 
@@ -234,9 +245,13 @@ int main(int argc, char const *argv[]) {
 if(IsEulerian(graph) == 0){
 
     cout<<"no path"<< endl;
-    return 0;
+    ofstream myfile (argv[2]);
 
+    myfile<<"no path";
+    return 0;
 }
+
+
 else{
 	cout<<"Eulerian" << endl;
 }
@@ -324,8 +339,8 @@ if (myfile.is_open()){
 
 
 
-auto stop = high_resolution_clock::now(); 
-auto duration = duration_cast<microseconds>(stop - start);
+ stop = high_resolution_clock::now(); 
+ duration = duration_cast<microseconds>(stop - start);
 
 cout<<endl;
 cout << "Time taken by function: "
