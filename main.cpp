@@ -25,8 +25,6 @@ public:
 
     Graph(int numberOfVertices);
 
-    // ~Graph(); 
-
     void addEdge(int v, int w) ;
 
 };
@@ -38,9 +36,6 @@ Graph::Graph(int numberOfVertices) {
     vector<vector<int>> adjacencyList ;
 }
 
-// Graph::~Graph() {
-//     delete[] adjacencyList;
-// }
 
 void Graph::addEdge(int v, int w) {
     unordered_map<int,int>::iterator itr;
@@ -97,24 +92,9 @@ void Graph::addEdge(int v, int w) {
             
        }
 	}
-    // Add w to v’s list.
+
 }
 
-// void Graph::traverse(int v, bool visited[]) {
-
-//     // Mark the current node as visited and
-//     // print it
-
-//     visited[v] = true;
-//     cout << v << " ";
-
-//     // Recur for all the vertices adjacent
-//     // to this vertex
-//     list<int>::iterator i;
-//     for (i = adjacencyList[v].begin(); i != adjacencyList[v].end(); ++i)
-//         if (!visited[*i])
-//             traverse(*i, visited);
-// }
 
 
 bool IsEulerian(Graph graph){
@@ -182,8 +162,6 @@ int main(int argc, char const *argv[]) {
     int previous_start;
     int edge_count =0;
 
-
-
     
     // read the input file
     while (!infile.eof())
@@ -199,7 +177,6 @@ int main(int argc, char const *argv[]) {
 
 
     // Initiliaze the graph
-
     auto start1 = high_resolution_clock::now(); 
     Graph graph(number_of_vertices);
 
@@ -222,26 +199,8 @@ int main(int argc, char const *argv[]) {
     cout << "Time taken by function: "
          << duration.count() / 1000000 << " seconds" << endl; 
 
-    // cout<<endl;
 
-// Show neighbors
-// for(int i = 0; i < graph.adjacencyList.size(); i ++){
-//     cout<<i<<" ";
-//     for(int j = 0; j < graph.adjacencyList.at(i).size(); j ++)
-//     {
-//         cout<<graph.adjacencyList.at(i).at(j)<< " ";
-
-//     }
-//     cout<<endl;
-
-// }
-
-
-// cout<<"176"<<endl;
-// cout<<endl;
-
-
-
+// Check if graph is Eulerian
 if(IsEulerian(graph) == 0){
 
     cout<<"no path"<< endl;
@@ -257,9 +216,8 @@ else{
 }
 
 
-// cout<<graph.outgoing_counter.size()<< endl;
-// Hierholzer’s Algorithm
 
+// Hierholzer’s Algorithm
 int candidate;
 
 
@@ -279,40 +237,12 @@ while (eulerian_circuit.size() < edge_count){
         starting_vertex = candidate;
         tour.push_back(starting_vertex);
     }
-
-    // for(int i=0; i < tour.size(); i++)
-    //     {
-    //     auto it1 = next(tour.begin(), i);
-    //         cout<<*it1<<" ";
-    // }
-
-    // cout<<endl;
     vector<int>::iterator location = find( eulerian_circuit.begin(), eulerian_circuit.end(), previous_start);;
-    // cout<<previous_start<<endl;
-
     vector<int>::iterator first = eulerian_circuit.begin();
     int index = distance(first, location );
     cout<<"index: "<<index<<endl;
     auto ilist = tour;
     eulerian_circuit.insert(location + 1 , tour.begin(), tour.end());
-    // for (int i = 0; i < tour.size(); i++){
-    //     cout<<"circuit size: "<< eulerian_circuit.size()<<" "<< "distance: "<<distance(first, location + i )<<endl;
-    //     if(eulerian_circuit.size()-1>distance(first, location + i )){
-    //         cout<<previous_start<<endl;
-    //         cout<<tour.at(i)<<endl;
-    //         index = distance(first, location + i + 1);
-    //         cout<<index<<endl;
-    //         cout<<eulerian_circuit.at(index)<<endl;;
-    //         eulerian_circuit.insert(location + i + 1 , tour.at(i));
-    //         cout<<"girdi"<<endl;
-    //     }
-    //     else{
-    //         cout<<tour.at(i)<<endl;
-    //         eulerian_circuit.push_back(tour.at(i));
-    //     }
-    // }
-
-    // eulerian_circuit.insert( eulerian_circuit.end(), tour.begin(), tour.end() );
     starting_vertex = find_vertex_with_nonused_edge( eulerian_circuit, edge_vector);
     cout<<"starting_vertex: " << starting_vertex<<endl;
     if( starting_vertex == -1){
@@ -320,6 +250,9 @@ while (eulerian_circuit.size() < edge_count){
     }
 }
 
+
+
+// Print to file
 ofstream myfile (argv[2]);
 
 
@@ -329,7 +262,6 @@ auto it1 = next(eulerian_circuit.begin(), i);
 if (myfile.is_open()){
     myfile<<*it1<<" ";
 }
-
 
 }
 
